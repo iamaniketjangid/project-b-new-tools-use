@@ -20,8 +20,11 @@ jobs:
           cache: 'npm'
 
       - name: Install deps
-        run: npm ci
+        run: |
+          cd project-b
+          npm ci
 
       - name: Nx affected build
-        run: npx nx affected -t build --base=HEAD~1 --head=HEAD
-
+        run: |
+          cd project-b
+          npx nx affected -t build --base=HEAD~1 --head=HEAD
