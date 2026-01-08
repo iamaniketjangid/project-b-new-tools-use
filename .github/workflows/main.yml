@@ -23,8 +23,14 @@ jobs:
         run: |
           cd project-b
           npm ci
-
-      - name: Nx affected build
+      - name: Nx build (affected or full)
         run: |
           cd project-b
-          npx nx affected -t build --base=HEAD~1 --head=HEAD
+          if git rev-parse HEAD~1 >/dev/null 2>&1; then
+            echo "Running Nx affected build"
+            npx nx affected -t build --base=HEAD~1 --head=HEAD
+          else
+            echo "First run detected, running full build"
+            npx nx build @org/api
+          fi
+      
